@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+echo "Preparing Laravel app..."
+
+mkdir -p storage/framework/cache/data
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
+mkdir -p bootstrap/cache
+
+chmod -R 775 storage bootstrap/cache
+
+if [ -f package.json ]; then
+    echo "Installing NPM dependencies..."
+    npm install --prefer-online --no-audit --no-fund
+
+    echo "Building frontend assets..."
+    npm run build
+fi
+
+echo "Waiting for database..."
+until php artisan db:show > /dev/null 2>&1; do
+    sleep 2
+done
+
+echo "Running migrations..."
+php artisan migrate --force
+
+echo "Clearing cache..."
+php artisan optimize:clear
+
+echo "Starting PHP-FPM..."
+exec docker-php-entrypoint "$@"
