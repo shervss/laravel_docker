@@ -54,7 +54,7 @@ class Index extends Component
     {
         $validated = $this->validate();
 
-        Task::create([
+        $task = Task::create([
             'user_id' => Auth::id(),
             'title' => $validated['title'],
             'description' => $validated['description'] ?? null,
@@ -63,6 +63,11 @@ class Index extends Component
             'priority' => 'Medium',
             'is_starred' => false,
         ]);
+
+        activity()
+            ->performedOn($task)
+            ->causedBy(Auth::user())
+            ->log('Created task');
 
         $this->closeCreateModal();
         $this->resetForm();
@@ -75,20 +80,37 @@ class Index extends Component
         $task->update([
             'is_starred' => ! $task->is_starred,
         ]);
+
+        activity()
+            ->performedOn($task)
+            ->causedBy(Auth::user())
+            ->log($task->is_starred ? 'Starred task' : 'Unstarred task');
     }
 
     public function updateStatus(int $taskId, string $status): void
     {
-        Task::where('user_id', Auth::id())
-            ->findOrFail($taskId)
-            ->update([
-                'status' => $status,
-            ]);
+        $task = Task::where('user_id', Auth::id())->findOrFail($taskId);
+
+        $task->update([
+            'status' => $status,
+        ]);
+
+        activity()
+            ->performedOn($task)
+            ->causedBy(Auth::user())
+            ->log("Changed task status to {$status}");
     }
 
     public function deleteTask(int $taskId): void
     {
-        Task::where('user_id', Auth::id())->findOrFail($taskId)->delete();
+        $task = Task::where('user_id', Auth::id())->findOrFail($taskId);
+
+        activity()
+            ->performedOn($task)
+            ->causedBy(Auth::user())
+            ->log('Deleted task');
+
+        $task->delete();
     }
 
     private function resetForm(): void

@@ -19,7 +19,14 @@ class Index extends Component
 
     public function makeAdmin(int $userId): void
     {
-        User::findOrFail($userId)->assignRole('admin');
+        $user = User::findOrFail($userId);
+
+        $user->assignRole('admin');
+
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->log('Promoted user to admin');
     }
 
     public function makeUser(int $userId): void
@@ -27,6 +34,11 @@ class Index extends Component
         $user = User::findOrFail($userId);
 
         $user->syncRoles(['user']);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->log('Changed user role to user');
     }
 
     public function render()
