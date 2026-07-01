@@ -5,29 +5,38 @@ namespace App\Livewire\Pages\Tasks;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
-    public bool $showCreateModal = false;
-    public bool $showEditModal = false;
+    use WithPagination;
 
-    public ?int $editingTaskId = null;
+    public bool $showCreateModal = false;
 
     public string $title = '';
     public ?string $description = null;
-    public string $status = 'Not Yet Started';
-    public string $priority = 'Medium';
     public ?string $due_date = null;
+
+    public string $search = '';
+    public string $statusFilter = '';
 
     protected function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'status' => ['required', 'in:Not Yet Started,Pending,Completed'],
-            'priority' => ['required', 'in:Low,Medium,High'],
             'due_date' => ['nullable', 'date'],
         ];
+    }
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
     }
 
     public function openCreateModal(): void
@@ -46,75 +55,78 @@ class Index extends Component
         $validated = $this->validate();
 
         Task::create([
-            ...$validated,
             'user_id' => Auth::id(),
+            'title' => $validated['title'],
+            'description' => $validated['description'] ?? null,
+            'due_date' => $validated['due_date'] ?? null,
+            'status' => 'Not Yet Started',
+            'priority' => 'Medium',
+            'is_starred' => false,
         ]);
 
         $this->closeCreateModal();
         $this->resetForm();
     }
 
-    public function openEditModal(int $taskId): void
+    public function toggleStar(int $taskId): void
     {
         $task = Task::where('user_id', Auth::id())->findOrFail($taskId);
 
-        $this->editingTaskId = $task->id;
-        $this->title = $task->title;
-        $this->description = $task->description;
-        $this->status = $task->status;
-        $this->priority = $task->priority;
-        $this->due_date = $task->due_date?->format('Y-m-d');
-
-        $this->resetValidation();
-        $this->showEditModal = true;
+        $task->update([
+            'is_starred' => ! $task->is_starred,
+        ]);
     }
 
-    public function closeEditModal(): void
+    public function updateStatus(int $taskId, string $status): void
     {
-        $this->showEditModal = false;
-        $this->resetForm();
-    }
-
-    public function updateTask(): void
-    {
-        $validated = $this->validate();
-
-        $task = Task::where('user_id', Auth::id())->findOrFail($this->editingTaskId);
-        $task->update($validated);
-
-        $this->closeEditModal();
+        Task::where('user_id', Auth::id())
+            ->findOrFail($taskId)
+            ->update([
+                'status' => $status,
+            ]);
     }
 
     public function deleteTask(int $taskId): void
     {
-        $task = Task::where('user_id', Auth::id())->findOrFail($taskId);
-        $task->delete();
+        Task::where('user_id', Auth::id())->findOrFail($taskId)->delete();
     }
 
     private function resetForm(): void
     {
         $this->resetValidation();
 
-        $this->editingTaskId = null;
         $this->title = '';
         $this->description = null;
-        $this->status = 'Not Yet Started';
-        $this->priority = 'Medium';
         $this->due_date = null;
     }
 
     public function render()
     {
-        $tasks = Task::where('user_id', Auth::id())
+        $baseQuery = Task::where('user_id', Auth::id());
+
+        $totalTasks = (clone $baseQuery)->count();
+        $pendingTasks = (clone $baseQuery)->where('status', 'Pending')->count();
+        $completedTasks = (clone $baseQuery)->where('status', 'Completed')->count();
+        $starredTasks = (clone $baseQuery)->where('is_starred', true)->count();
+
+        $tasks = $baseQuery
+            ->when($this->search, function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('title', 'like', '%' . $this->search . '%')
+                        ->orWhere('description', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->when($this->statusFilter, fn ($query) => $query->where('status', $this->statusFilter))
+            ->orderByDesc('is_starred')
             ->latest()
-            ->get();
+            ->paginate(10);
 
         return view('livewire.pages.tasks.index', [
             'tasks' => $tasks,
-            'totalTasks' => $tasks->count(),
-            'pendingTasks' => $tasks->where('status', 'Pending')->count(),
-            'completedTasks' => $tasks->where('status', 'Completed')->count(),
-            'highPriorityTasks' => $tasks->where('priority', 'High')->count(),
+            'totalTasks' => $totalTasks,
+            'pendingTasks' => $pendingTasks,
+            'completedTasks' => $completedTasks,
+            'starredTasks' => $starredTasks,
         ]);
     }
 }

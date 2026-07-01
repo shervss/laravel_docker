@@ -16,10 +16,12 @@ class Task extends Model
         'status',
         'priority',
         'due_date',
+        'is_starred',
     ];
 
     protected $casts = [
         'due_date' => 'date',
+        'is_starred' => 'boolean',
     ];
 
     public function user()
