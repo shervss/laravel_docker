@@ -46,4 +46,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * A user can have many tasks.
+     */
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
