@@ -1,59 +1,314 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Docker Task Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Task Management System built with **Laravel 12**, **Livewire**, **Docker**, **MySQL**, and **Spatie** packages. This project demonstrates authentication, task management, role-based access control, activity logging, and containerized deployment.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Authentication
+- User Registration
+- User Login & Logout
+- User Profile Management
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Task Management
+- Create Tasks
+- View Tasks
+- Delete Tasks
+- Update Task Status
+- Star / Unstar Tasks
+- Search Tasks
+- Filter Tasks
+- Dashboard Statistics
 
-## Learning Laravel
+### Administration
+- Admin Dashboard
+- User Management
+- Role-Based Access Control (Admin/User)
+- Protected Admin Routes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Activity Logging
+- Log task creation
+- Log task deletion
+- Log task status updates
+- Log starred/unstarred tasks
+- Log user role changes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Docker
+- Laravel Application Container
+- Nginx Container
+- MySQL Container
+- Automatic Database Migration
+- Automatic Frontend Asset Build
 
-## Laravel Sponsors
+---
+# Preview
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### User Dashboard
+![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/user_dashboard.png?raw=true)
 
-### Premium Partners
+### Admin Dashboard
+![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/admin_dashboard.png?raw=true)
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### User Management
+![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/admin_user_management.png?raw=true)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Tech Stack
 
-## Code of Conduct
+| Category | Technology |
+|----------|------------|
+| Backend | Laravel 12 |
+| Frontend | Livewire 3, Blade, Tailwind CSS |
+| Authentication | Laravel Breeze |
+| Database | MySQL 8 |
+| Web Server | Nginx |
+| Containerization | Docker & Docker Compose |
+| Build Tool | Vite |
+| Permissions | Spatie Laravel Permission |
+| Activity Logs | Spatie Laravel Activity Log |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+# Built With
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Tool | Purpose |
+|------|---------|
+| PHP 8.4 | Backend Language |
+| Composer | Dependency Management |
+| Docker | Containerization |
+| Docker Compose | Multi-container Orchestration |
+| MySQL | Database |
+| Nginx | Web Server |
+| Livewire | Reactive UI Components |
+| Tailwind CSS | User Interface |
+| Vite | Frontend Asset Bundling |
+| Git | Version Control |
+| GitHub | Source Code Hosting |
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Requirements
+
+Before running the project, make sure you have installed:
+
+- Docker Desktop
+- Docker Compose
+- Git
+
+---
+
+# Quick Start
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/shervss/laravel_docker.git
+```
+
+```bash
+cd laravel_docker
+```
+
+## Copy the Environment File
+
+Linux / WSL
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell
+
+```powershell
+copy .env.example .env
+```
+
+## Build and Start the Containers
+
+```bash
+docker compose up --build -d
+```
+
+## Generate the Application Key
+
+```bash
+docker exec -it laravel_docker_app php artisan key:generate
+```
+
+## Run Database Migrations
+
+```bash
+docker exec -it laravel_docker_app php artisan migrate
+```
+
+## Seed the Database
+
+```bash
+docker exec -it laravel_docker_app php artisan db:seed
+```
+
+## Page Access
+
+| Page | URL | Access |
+|------|-----|--------|
+| Welcome | `http://localhost:8000/` | Public |
+| Login | `http://localhost:8000/login` | Public |
+| Register | `http://localhost:8000/register` | Public |
+| Dashboard | `http://localhost:8000/dashboard` | Authenticated Users |
+| Tasks | `http://localhost:8000/tasks` | Authenticated Users |
+| Profile | `http://localhost:8000/profile` | Authenticated Users |
+| Admin Dashboard | `http://localhost:8000/admin` | Admin Only |
+| User Management | `http://localhost:8000/admin/users` | Admin Only |
+
+---
+
+# Test Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@example.com | password |
+| User | test@example.com | password |
+
+---
+
+# Project Architecture
+
+## Project Structure
+
+```
+app/
+├── Livewire/
+│   ├── Pages/
+│   │   ├── Admin/
+│   │   └── Tasks/
+│   └── ...
+├── Models/
+├── Providers/
+
+bootstrap/
+config/
+database/
+docker/
+public/
+resources/
+routes/
+storage/
+```
+
+---
+
+## Key Files
+
+| File | Description |
+|------|-------------|
+| routes/web.php | Web application routes |
+| app/Models/Task.php | Task model |
+| app/Models/User.php | User model with roles |
+| app/Livewire/Pages/Tasks/Index.php | Task Management component |
+| app/Livewire/Pages/Admin/Dashboard.php | Admin Dashboard |
+| app/Livewire/Pages/Admin/Users/Index.php | User Management |
+| docker-compose.yml | Docker services |
+| Dockerfile | PHP application image |
+| nginx/default.conf | Nginx configuration |
+
+---
+
+# Docker Containers
+
+| Container | Purpose |
+|-----------|---------|
+| laravel_docker_app | Laravel PHP Application |
+| laravel_docker_nginx | Nginx Web Server |
+| laravel_docker_mysql | MySQL Database |
+
+---
+
+# Containerization
+
+The application is containerized using Docker Compose.
+
+Services include:
+
+- Laravel PHP Application
+- Nginx Web Server
+- MySQL Database
+
+During startup, the application automatically:
+
+- Builds frontend assets using Vite
+- Waits for the MySQL database to become available
+- Runs pending database migrations
+- Clears Laravel caches
+- Starts PHP-FPM
+
+---
+
+# Useful Commands
+
+## Start Containers
+
+```bash
+docker compose up -d
+```
+
+## Stop Containers
+
+```bash
+docker compose down
+```
+
+## Rebuild Containers
+
+```bash
+docker compose up --build -d
+```
+
+## Restart Containers
+
+```bash
+docker compose restart
+```
+
+## View Running Containers
+
+```bash
+docker ps
+```
+
+## View Application Logs
+
+```bash
+docker logs laravel_docker_app
+```
+
+## Enter the Laravel Container
+
+```bash
+docker exec -it laravel_docker_app bash
+```
+
+## Run Migrations
+
+```bash
+docker exec -it laravel_docker_app php artisan migrate
+```
+
+## Seed the Database
+
+```bash
+docker exec -it laravel_docker_app php artisan db:seed
+```
+
+## Clear Laravel Cache
+
+```bash
+docker exec -it laravel_docker_app php artisan optimize:clear
+```
+
+---
+
+# License
+
+This project is licensed under the MIT License.
