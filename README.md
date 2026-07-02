@@ -45,13 +45,20 @@ A Task Management System built with **Laravel 12**, **Livewire**, **Docker**, **
 # Preview
 
 ### User Dashboard
-![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/user_dashboard.png?raw=true)
+
+![User Dashboard](preview/user_dashboard.png)
 
 ### Admin Dashboard
-![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/admin_dashboard.png?raw=true)
+
+![Admin Dashboard](preview/admin_dashboard.png)
 
 ### User Management
-![Alt Text](https://github.com/shervss/laravel_docker/blob/main/preview/admin_user_management.png?raw=true)
+
+![User Management](preview/user_management.png)
+
+### Activity Logs
+
+![Activity Logs](preview/activity_logs.png)
 
 ---
 
@@ -161,6 +168,7 @@ docker exec -it laravel_docker_app php artisan db:seed
 | Profile | `http://localhost:8000/profile` | Authenticated Users |
 | Admin Dashboard | `http://localhost:8000/admin` | Admin Only |
 | User Management | `http://localhost:8000/admin/users` | Admin Only |
+| Activity Logs | `http://localhost:8000/admin/activity-logs` | Admin Only |
 
 ---
 
