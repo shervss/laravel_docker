@@ -26,6 +26,20 @@
                         Tasks
                     </a>
 
+                    @role('admin')
+                        <a href="{{ route('admin.dashboard') }}" class="text-slate-300 hover:text-white">
+                            Admin
+                        </a>
+
+                        <a href="{{ route('admin.users.index') }}" class="text-slate-300 hover:text-white">
+                            Users
+                        </a>
+
+                        <a href="{{ route('admin.activity-logs.index') }}" class="text-slate-300 hover:text-white">
+                            Activity Logs
+                        </a>
+                    @endrole
+
                     <a href="{{ route('profile') }}" class="text-slate-300 hover:text-white">
                         Profile
                     </a>

@@ -40,7 +40,6 @@
         </div>
 
         @include('livewire.pages.tasks._create-modal')
-        @include('livewire.pages.tasks._edit-modal')
 
     </div>
 </div>
