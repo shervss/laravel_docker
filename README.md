@@ -132,10 +132,24 @@ Windows PowerShell
 copy .env.example .env
 ```
 
-## Build and Start the Containers
+## Build the Containers (First Time Only)
 
 ```bash
 docker compose up --build -d
+```
+
+## Start the Containers (Subsequent Runs)
+
+```bash
+docker compose up -d
+```
+
+## Restart the Laravel Application and Nginx
+
+> If the application does not load (e.g., **502 Bad Gateway**) after starting the containers, restart the application services.
+
+```bash
+docker compose restart app nginx
 ```
 
 ## Generate the Application Key
@@ -273,10 +287,24 @@ docker compose down
 docker compose up --build -d
 ```
 
-## Restart Containers
+## Build the Containers (First Time Only)
 
 ```bash
-docker compose restart
+docker compose up --build -d
+```
+
+## Start the Containers (Subsequent Runs)
+
+```bash
+docker compose up -d
+```
+
+## Restart the Laravel Application and Nginx
+
+> If the application does not load (e.g., **502 Bad Gateway**) after starting the containers, restart the application services.
+
+```bash
+docker compose restart app nginx
 ```
 
 ## View Running Containers
